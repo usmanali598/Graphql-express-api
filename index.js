@@ -57,11 +57,13 @@ const schema = new GraphQLSchema({
 
 const app = express();
 
+// graphiql environment
 app.use("/graphql", graphqlHTTP({
     schema,
     graphiql:true
 }));
 
+// route - localhost:3000
 app.get("/", (req, res) => {
     const query = `query{users{id name age}}`
     // graphql returns a promise that we can then send to client(browser),
@@ -69,6 +71,7 @@ app.get("/", (req, res) => {
     graphql(schema, "{users{id, name, age}}", query).then(response => res.send(response)).catch(err => res.send(err));
 })
 
+// route - localhost:3000/1 
 app.get("/:id", (req, res) => {
     // we can create query what values we want, can separate fields by space or commas
     const query = `query{user(id:${req.params.id}){id, name, age}}`
